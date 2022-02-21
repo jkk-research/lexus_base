@@ -1,0 +1,7 @@
+<launch>
+    <!--rosrun lexus_base speed_control-->
+    <node pkg="lexus_base" type="speed_control" name="speed_control_pid" output="screen">
+        <param name="p_gain_accel" value="1.1"/>
+        <param name="i_gain_accel" value="0.002"/>
+    </node>
+</launch>

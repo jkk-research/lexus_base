@@ -1,0 +1,11 @@
+<launch>
+    <!-- rosrun lexus_base speed_control-->
+    <node pkg="lexus_base" type="speed_control" name="speed_control_pid" output="screen">
+        <param name="p_gain_accel" value="1.2"/>
+        <param name="i_gain_accel" value="0.01"/>
+    </node>
+    <!-- rosrun rqt_reconfigure rqt_reconfigure -->
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconf" output="screen" />
+    <!-- rosrun rqt_robot_steering rqt_robot_steering -->
+    <node pkg="rqt_robot_steering" type="rqt_robot_steering" name="rqt_steer" output="screen" />
+</launch>
