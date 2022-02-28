@@ -1,0 +1,28 @@
+<launch>
+    <!-- rosrun lexus_base translator_cmd_vel.py-->
+    <node pkg="lexus_base" type="translator_cmd_vel.py" name="translator_cmd_vel_test" output="screen" />
+    <!-- rosrun rqt_robot_steering rqt_robot_steering -->
+    <node pkg="rqt_robot_steering" type="rqt_robot_steering" name="rqt_steer" output="screen" />
+
+  <arg name="pacmod_vehicle_type" default="LEXUS_RX_450H" />
+  <!-- <arg name="controller_type" default="LOGITECH_F310"/> -->
+  <arg name="controller_type" default="TODO"/>
+  <arg name="is_pacmod_3" default="true" />
+
+  <!-- Game Control -->
+  <include file="$(find pacmod_game_control)/launch/pacmod_game_control.launch">
+    <arg name="pacmod_vehicle_type" value="$(arg pacmod_vehicle_type)" />
+    <arg name="controller_type" value="$(arg controller_type)"/>
+    <arg name="is_pacmod_3" value="$(arg is_pacmod_3)" />
+    <arg name="launch_pacmod" value="false" />
+  </include>
+
+  <!-- PacMod Driver -->
+  <include file="$(find vehicle_platform)/launch/platform.launch">
+    <arg name="use_dbw" value="true" />
+  </include>
+
+  <param if="$(eval arg('controller_type') == 'LOGITECH_F310')" name="game_control/joy/dev" value="/dev/input/gamepad-logitech" />
+  <param if="$(eval arg('controller_type') == 'HRI_SAFE_REMOTE')" name="game_control/joy/dev" value="/dev/input/gamepad-fort" />
+
+</launch>

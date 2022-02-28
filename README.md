@@ -45,3 +45,9 @@ float64 manual_input
 float64 command
 float64 output
 ```
+
+# Topics
+
+- `/pacmod/as_rx/accel_cmd` - reference
+- `/pacmod/parsed_tx/accel_rpt` - actual
+- `/pacmod/parsed_tx/vehicle_speed_rpt` - actual speed
