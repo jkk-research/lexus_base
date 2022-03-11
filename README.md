@@ -46,8 +46,48 @@ float64 command
 float64 output
 ```
 
+
 # Topics
 
 - `/pacmod/as_rx/accel_cmd` - reference
 - `/pacmod/parsed_tx/accel_rpt` - actual
 - `/pacmod/parsed_tx/vehicle_speed_rpt` - actual speed
+
+# Install CAN pacmod
+
+- https://github.com/astuff/kvaser_interface
+- https://github.com/astuff/pacmod3
+- https://github.com/astuff/pacmod_game_control
+
+``` c
+sudo apt install ros-melodic-socketcan-interface
+sudo apt install ros-melodic-socketcan-bridge
+sudo apt install can-utils 
+```
+
+``` c
+modprobe can_dev
+modprobe can
+modprobe can_raw
+sudo ip link set can0 type can bitrate 500000
+sudo ip link set up can0
+
+sudo ip link set can0 up type can bitrate 500000
+```
+## Test
+
+``` r
+rosrun kvaser_interface list_channels 
+candump can0
+cansniffer can0
+```
+## Config
+
+``` c
+roscd pacmod_game_control/launch/
+code pacmod_game_control.launch 
+```
+``` xml
+<arg name="use_socketcan" default="true" />
+```
+`roslaunch pacmod_game_control pacmod_game_control.launch`

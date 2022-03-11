@@ -17,10 +17,11 @@
     <arg name="launch_pacmod" value="false" />
   </include>
 
-  <!-- PacMod Driver -->
+  <!-- PacMod Driver 
   <include file="$(find vehicle_platform)/launch/platform.launch">
     <arg name="use_dbw" value="true" />
   </include>
+  -->
 
   <param if="$(eval arg('controller_type') == 'LOGITECH_F310')" name="game_control/joy/dev" value="/dev/input/gamepad-logitech" />
   <param if="$(eval arg('controller_type') == 'HRI_SAFE_REMOTE')" name="game_control/joy/dev" value="/dev/input/gamepad-fort" />
