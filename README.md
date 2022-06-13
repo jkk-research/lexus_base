@@ -91,3 +91,8 @@ code pacmod_game_control.launch
 <arg name="use_socketcan" default="true" />
 ```
 `roslaunch pacmod_game_control pacmod_game_control.launch`
+
+## Further reading
+- https://autonomoustuff.atlassian.net/wiki/spaces/RW/overview
+- https://github.com/astuff
+
