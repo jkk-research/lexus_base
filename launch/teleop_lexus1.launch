@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="pacmod_vehicle_type" default="LEXUS_RX_450H" />
+  <arg name="controller_type" default="LOGITECH_F310"/>
+  <arg name="is_pacmod_3" default="true" />
+
+  <!-- Game Control 
+  
+  <include file="$(find pacmod_game_control)/launch/pacmod_game_control.launch">
+    <arg name="pacmod_vehicle_type" value="$(arg pacmod_vehicle_type)" />
+    <arg name="controller_type" value="$(arg controller_type)"/>
+    <arg name="is_pacmod_3" value="$(arg is_pacmod_3)" />
+    <arg name="launch_pacmod" value="false" />
+  </include>
+  -->
+
+
+  <node pkg="lexus_base" type="translator_joy_vel.py" name="joy_to_pacmod" output="screen" />
+
+  <node pkg="joy" type="joy_node" name="joy_node_for_game_pad" output="screen">
+      <param name="dev" type="string" value="/dev/input/js0" />
+      <param name="deadzone" type="double" value="0.0004" />
+  </node>
+
+
+  <!-- PacMod Driver -->
+  <include file="$(find vehicle_platform)/launch/platform.launch">
+    <arg name="use_dbw" value="true" />
+  </include>
+
+  <param if="$(eval arg('controller_type') == 'LOGITECH_F310')" name="game_control/joy/dev" value="/dev/input/gamepad-logitech" />
+  <param if="$(eval arg('controller_type') == 'HRI_SAFE_REMOTE')" name="game_control/joy/dev" value="/dev/input/gamepad-fort" />
+</launch>
