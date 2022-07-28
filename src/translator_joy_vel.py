@@ -4,6 +4,7 @@
 import rospy
 import pacmod_msgs.msg as pac_msg
 from sensor_msgs.msg import Joy
+from std_msgs.msg import Bool
 
 class Translator:
     def __init__(self):
@@ -11,12 +12,18 @@ class Translator:
         self.pubA = rospy.Publisher("/pacmod/as_rx/accel_cmd", pac_msg.SystemCmdFloat, queue_size=1)
         self.pubB = rospy.Publisher("/pacmod/as_rx/brake_cmd", pac_msg.SystemCmdFloat, queue_size=1)
         self.pubS = rospy.Publisher("/pacmod/as_rx/steer_cmd", pac_msg.SteerSystemCmd, queue_size=1)
+        self.pubE = rospy.Publisher("/pacmod/as_tx/enabled", Bool, queue_size=1)
+        self.pubF = rospy.Publisher("/pacmod/as_rx/enable", Bool, queue_size=1)
         self.last_published_time = rospy.get_rostime()
         self.last_published = None
         self.timer = rospy.Timer(rospy.Duration(1./20.), self.timer_callback)
         self.firstRun = True
         
     def timer_callback(self, event):
+        # rostopic pub /pacmod/as_tx/enabled std_msgs/Bool "data: true" -r 20
+        status = Bool()
+        status.data = True
+        self.pubE.publish(status)
         if self.last_published and self.last_published_time < rospy.get_rostime() + rospy.Duration(1.0/20.):
             self.callback(self.last_published)
 
@@ -29,23 +36,13 @@ class Translator:
         steerCmd.header.stamp = rospy.Time.now()
         if (self.firstRun):
             accelCmd.clear_override = True
+            #/pacmod/as_rx/enable.data
+            status = Bool()
+            status.data = True
+            self.pubF.publish(status)            
             self.firstRun = False
         else:
             accelCmd.clear_override = False
-        """
-        if message.axes.x > 0.2:
-            accelCmd.command = message.linear.x
-            brakeCmd.command = 0.0
-            accelCmd.enable = False
-        elif message.linear.x < -0.1:
-            accelCmd.command = 0.0
-            brakeCmd.command = -1 * message.linear.x
-            accelCmd.enable = True
-        else:
-            accelCmd.command = 0.0
-            brakeCmd.command = 0.0
-            accelCmd.enable = True
-        """
         steerCmd.command = message.axes[0] * 6
         accelCmd.command = (message.axes[1] + 1) 
         brakeCmd.command = (message.axes[2] + 1) 
