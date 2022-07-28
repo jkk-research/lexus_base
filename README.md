@@ -95,4 +95,8 @@ code pacmod_game_control.launch
 ## Further reading
 - https://autonomoustuff.atlassian.net/wiki/spaces/RW/overview
 - https://github.com/astuff
+- http://wiki.ros.org/pacmod3
 
+# Rosgraph
+
+![](img/rosgraph_before01.svg)
