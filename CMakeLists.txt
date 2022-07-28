@@ -142,6 +142,10 @@ add_executable(speed_control src/speed_control.cpp)
 add_dependencies(speed_control ${PROJECT_NAME}_gencfg)
 target_link_libraries(speed_control ${catkin_LIBRARIES})
 
+add_executable(path_and_steering src/path_and_steering.cpp)
+target_link_libraries(path_and_steering ${catkin_LIBRARIES})
+
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
