@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="pacmod_vehicle_type" default="LEXUS_RX_450H" />
+  <arg name="is_pacmod_3" default="true" />
+
+
+  <node pkg="lexus_base" type="translator_joy_vel.py" name="joy_to_pacmod" output="screen" />
+
+
+  <!-- PacMod Driver -->
+  <include file="$(find vehicle_platform)/launch/platform.launch">
+    <arg name="use_dbw" value="true" />
+  </include>
+
+</launch>
