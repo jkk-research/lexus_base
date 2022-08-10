@@ -9,6 +9,8 @@ from std_msgs.msg import Bool
 class Translator:
     def __init__(self):
         self.sub = rospy.Subscriber("joy", Joy, self.callback)
+        self.sub = rospy.Subscriber("/pacmod/as_tx/enabled", Bool, self.callbackEnabled)
+        
         self.pubA = rospy.Publisher("pacmod/as_rx/accel_cmd", pac_msg.SystemCmdFloat, queue_size=1)
         self.pubB = rospy.Publisher("pacmod/as_rx/brake_cmd", pac_msg.SystemCmdFloat, queue_size=1)
         self.pubS = rospy.Publisher("pacmod/as_rx/steer_cmd", pac_msg.SteerSystemCmd, queue_size=1)
@@ -23,19 +25,21 @@ class Translator:
 
         self.last_published_time = rospy.get_rostime()
         self.last_published = None
-        self.timer = rospy.Timer(rospy.Duration(1./30.), self.timer_callback)
+        self.timer = rospy.Timer(rospy.Duration(1./2.), self.timer_callback)
         self.joyInit = True
-        self.autonomStatusChanged = False
+        self.autonomStatusChanged = True
         self.autonomStatus = True
+        self.pacmodst = True
         rospy.loginfo("joy translator")
-        
+    
     def timer_callback(self, event):
-        # rostopic pub /pacmod/as_tx/enabled std_msgs/Bool "data: true" -r 20
-        status = Bool()
-        status.data = True
-        #self.pubE.publish(status)
-        #if self.last_published and self.last_published_time < rospy.get_rostime() + rospy.Duration(1.0/20.):
-        #    self.callback(self.last_published)
+        if (self.pacmodst == False):
+            self.autonomStatus = False
+            #rospy.logwarn("Pacmod says off")
+
+    def callbackEnabled(self, message):
+        self.pacmodst = message.data
+            
 
     def callback(self, message):
         accelCmd = pac_msg.SystemCmdFloat()
@@ -52,27 +56,33 @@ class Translator:
         steerCmd.command = message.axes[0] * 6
         accelCmd.command = (message.axes[1] + 1) 
         brakeCmd.command = (message.axes[2] + 1) 
-        if(message.buttons[1]): # start A
-            self.autonomStatusChanged = True
-            self.autonomStatus = True
-            rospy.loginfo("Autonomous mode on")
-        elif(message.buttons[0]): # stop B
+        if(self.autonomStatus == False):
+            if(message.buttons[0]): # start A
+                self.autonomStatusChanged = True
+                self.autonomStatus = True
+                rospy.loginfo("Autonomous mode on")
+        TUCmd.command = 1
+        if(message.buttons[1]): # stop B
             self.autonomStatusChanged = True
             self.autonomStatus = False
             rospy.loginfo("Autonomous mode off")
         elif(message.buttons[2]): # horn  X
             HOCmd.command = True
             rospy.loginfo("Horn")
-        elif(message.buttons[3]): # lights Y
-            HECmd.command = 2
-            rospy.loginfo("Lights on")
-        if (self.autonomStatus):
+        elif(message.axes[4] > 0): # lights 
+            TUCmd.command = 2
+            rospy.loginfo("Left")
+        elif(message.axes[4] < 0): # lights 
+            TUCmd.command = 0
+            rospy.loginfo("Right")
+        elif(message.axes[5] < 0): # lights 
+            TUCmd.command = 3
+            rospy.loginfo("Down")
+        elif(message.axes[5] > 0): # lights 
+            TUCmd.command = 1        
+            rospy.loginfo("Up")
+        if(self.autonomStatusChanged):
             accelCmd.clear_override = True
-            #/pacmod/as_rx/enable.data
-            status = Bool()
-            status.data = self.autonomStatus
-            self.pubF.publish(status)
-            self.firstRun = False
             brakeCmd.clear_override = True
             accelCmd.clear_override = True
             steerCmd.clear_override = True
@@ -81,15 +91,8 @@ class Translator:
             WICmd.clear_override = True
             SHCmd.clear_override = True
             HOCmd.clear_override = True
-            brakeCmd.enable = True
-            accelCmd.enable = True
-            steerCmd.enable = True
-            TUCmd.enable = True
-            HECmd.enable = True
-            WICmd.enable = True
-            SHCmd.enable = True
-            HOCmd.enable = True            
         else:
+            accelCmd.clear_override = False
             brakeCmd.clear_override = False
             accelCmd.clear_override = False
             steerCmd.clear_override = False
@@ -98,24 +101,30 @@ class Translator:
             WICmd.clear_override = False
             SHCmd.clear_override = False
             HOCmd.clear_override = False
-            brakeCmd.enable = False
-            accelCmd.enable = False
-            steerCmd.enable = False
-            TUCmd.enable = False
-            HECmd.enable = False
-            WICmd.enable = False
-            SHCmd.enable = False
-            HOCmd.enable = False
+        #/pacmod/as_rx/enable.data
+        status = Bool()
+        status.data = self.autonomStatus
+        brakeCmd.enable = self.autonomStatus
+        accelCmd.enable = self.autonomStatus
+        steerCmd.enable = self.autonomStatus
+        TUCmd.enable = self.autonomStatus
+        HECmd.enable = self.autonomStatus
+        WICmd.enable = self.autonomStatus
+        SHCmd.enable = self.autonomStatus
+        HOCmd.enable = self.autonomStatus            
         if(self.joyInit):
             if(message.axes[1] == 0.0):
-                TUCmd.command = 3
                 accelCmd.command = 0.0 
             else:
-                TUCmd.command = 1
                 self.joyInit = False
         steerCmd.rotation_rate = 3.3
         accelCmd.header.frame_id = "pacmod"        
-        rospy.loginfo("accel brake steer: %.1f %.1f %.1f" %(accelCmd.command, brakeCmd.command, steerCmd.command))
+        ast = "----"
+        if (self.autonomStatus):
+            ast = "Auto  "
+        else:
+            ast = "Driver"
+        rospy.loginfo("%s accel brake steer: %.1f %.1f %.1f" %(ast, accelCmd.command, brakeCmd.command, steerCmd.command))
         self.last_published = message
         self.pubA.publish(accelCmd)
         self.pubB.publish(brakeCmd)
@@ -125,6 +134,7 @@ class Translator:
         self.pubWI.publish(WICmd)
         self.pubSH.publish(SHCmd)
         self.pubHO.publish(HOCmd)
+        self.pubF.publish(status)
 
 
 if __name__ == '__main__':
