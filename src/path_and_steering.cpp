@@ -125,12 +125,7 @@ void loop(){
         path.poses.push_back(pose);
         path.header.stamp = ros::Time::now();
     }
-    pose.header.stamp = ros::Time::now();
-    pose.header.frame_id = "map";
-    pose.pose.position = actual_pose.pose.position; 
     path.poses.push_back(pose);
-    path.header.frame_id = "map";
-    path.header.stamp = ros::Time::now();
     // keep only the last n (path_size) path message
     if (path.poses.size() > path_size){
         int shift = path.poses.size() - path_size;
