@@ -14,9 +14,40 @@ double wheelbase = 2.79; // TODO
 double steering_angle; 
 int path_size;
 bool steering_enabled;
+bool first_run = true;
+const double map_gyor_0_x = 697237.0, map_gyor_0_y = 5285644.0;
+const double map_zala_0_x = 639770.0, map_zala_0_y = 5195040.0;
 ros::Publisher marker_pub, path_pub;
 nav_msgs::Path path;
 geometry_msgs::PoseStamped actual_pose;
+int location = 0;
+namespace locations // add when new locations appear
+{
+  enum LOCATIONS
+  {
+    DEFAULT = 0,
+    GYOR,
+    ZALA,
+    NOT_USED_YET
+  };
+}
+int getLocation(const geometry_msgs::PoseStamped &pose){
+    double distance_from_gyor = std::sqrt(std::pow(pose.pose.position.x - map_gyor_0_x, 2) + std::pow(pose.pose.position.y - map_gyor_0_y, 2));
+    double distance_from_zala = std::sqrt(std::pow(pose.pose.position.x - map_zala_0_x, 2) + std::pow(pose.pose.position.y - map_zala_0_y, 2));
+    //ROS_INFO_STREAM("distance_from_gyor: " << distance_from_gyor << " distance_from_zala: " << distance_from_zala);
+    if(distance_from_gyor < 50000.0){ // 50 km from Gyor
+        ROS_INFO_STREAM("Welcome to Gyor");
+        return locations::GYOR;
+    }
+    else if(distance_from_zala < 50000.0){ // 50 km from Zalaegerszeg
+        ROS_INFO_STREAM("Welcome to Zala");
+        return locations::ZALA;
+    }
+    else{
+        ROS_INFO_STREAM("Default map");
+        return locations::DEFAULT;
+    }
+}
 
 // Callback for steering wheel messages
 void vehicleSteeringCallback(const pacmod_msgs::SystemRptFloat &steer_msg){
@@ -64,6 +95,36 @@ void loop(){
     marker_pub.publish(steer_marker);
     steer_marker.points.clear();
     geometry_msgs::PoseStamped pose;
+    std::string current_map = "empty";
+    pose.header.stamp = ros::Time::now();
+    if (actual_pose.pose.position.x > 0.01 || actual_pose.pose.position.x < -0.01){
+        if (first_run){
+            location = getLocation(actual_pose);
+            first_run = false;
+        }
+        switch (location)
+        {
+        case locations::DEFAULT:
+            pose.pose.position = actual_pose.pose.position;
+            current_map = "map";
+            break;
+        case locations::GYOR:
+            pose.pose.position.x = actual_pose.pose.position.x - map_gyor_0_x; 
+            pose.pose.position.y = actual_pose.pose.position.y - map_gyor_0_y; 
+            current_map = "map_gyor_0";
+        break;
+        case locations::ZALA:
+            pose.pose.position.x = actual_pose.pose.position.x - map_zala_0_x; 
+            pose.pose.position.y = actual_pose.pose.position.y - map_zala_0_y; 
+            current_map = "map_zala_0";
+            break;
+        }
+        pose.header.frame_id = current_map;
+        path.header.frame_id = current_map;
+        pose.pose.orientation = actual_pose.pose.orientation; 
+        path.poses.push_back(pose);
+        path.header.stamp = ros::Time::now();
+    }
     pose.header.stamp = ros::Time::now();
     pose.header.frame_id = "map";
     pose.pose.position = actual_pose.pose.position; 
