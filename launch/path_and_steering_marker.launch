@@ -2,7 +2,9 @@
     <node pkg="lexus_base" type="path_and_steering" name="path_and_steering_mark" output="screen">
         <param name="pose_topic" value="/gps/duro/current_pose"/>
     </node>
+    <!--
     <node pkg="rviz_markers" type="lexus" name="lexus_f" output="screen">
-            <param name="frame_id" value="base_link"/>
+            <param name="frame_id" value="/base_link"/>
     </node>
+    -->
 </launch>

@@ -8,6 +8,8 @@ add_compile_options(-std=c++11)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  tf2
+  tf2_ros
   nav_msgs
   roscpp
   rospy
@@ -144,6 +146,9 @@ target_link_libraries(speed_control ${catkin_LIBRARIES})
 
 add_executable(path_and_steering src/path_and_steering.cpp)
 target_link_libraries(path_and_steering ${catkin_LIBRARIES})
+
+add_executable(gps_tf_publisher src/gps_tf_publisher.cpp)
+target_link_libraries(gps_tf_publisher ${catkin_LIBRARIES})
 
 
 ## Rename C++ executable without prefix
