@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="lexus_base" type="current_pose_from_tf" name="current_pose_from_tf_node" output="screen">
+        <param name="pose_topic" value="/current_pose"/>
+    </node>
+</launch>

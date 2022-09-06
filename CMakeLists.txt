@@ -150,6 +150,8 @@ target_link_libraries(path_and_steering ${catkin_LIBRARIES})
 add_executable(gps_tf_publisher src/gps_tf_publisher.cpp)
 target_link_libraries(gps_tf_publisher ${catkin_LIBRARIES})
 
+add_executable(current_pose_from_tf src/current_pose_from_tf.cpp)
+target_link_libraries(current_pose_from_tf ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
