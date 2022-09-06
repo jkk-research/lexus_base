@@ -7,7 +7,10 @@
   <include file="$(find lexus_base)/launch/tf_static.launch" />
   <include file="$(find lexus_base)/launch/tf_duro_front.launch" />
   <node pkg="lexus_base" type="translator_joy_vel.py" name="joy_to_pacmod" output="screen" />
-  <node pkg="lexus_base" type="path_and_steering" name="path_and_steer" output="screen" />
+  <node pkg="lexus_base" type="path_and_steering" name="path_and_steering_mark" output="screen">
+      <param name="pose_topic" value="/gps/duro/current_pose"/>
+      <param name="path_size" value="500"/>
+  </node>
   <node pkg="rviz_markers" type="lexus" name="lexus_f" output="screen">
           <param name="frame_id" value="/base_link"/>
   </node>

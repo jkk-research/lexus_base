@@ -53,7 +53,7 @@ class Translator:
         accelCmd.header.stamp = rospy.Time.now()
         brakeCmd.header.stamp = rospy.Time.now()
         steerCmd.header.stamp = rospy.Time.now()
-        steerCmd.command = message.axes[0] * 6
+        steerCmd.command = message.axes[0] * 20  # 6 for local 20 for laptop
         accelCmd.command = (message.axes[1] + 1) 
         brakeCmd.command = (message.axes[2] + 1) 
         if(self.autonomStatus == False):

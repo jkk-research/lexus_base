@@ -23,7 +23,7 @@ class PlotHandler(object):
         self.area = darea.DockArea()
         self.win = qtgqt.QtGui.QMainWindow()
         self.rospack = rospkg.RosPack()
-        self.win.move
+        self.win.setWindowFlags(qtgqt.QtCore.Qt.WindowStaysOnTopHint)
 
     def initializePlot(self):
         self.first_run = True
@@ -68,8 +68,8 @@ class PlotHandler(object):
         self.widgplot.addItem(self.blueWheelText1)
         self.drawBlueCircle(self.widgplot)
 
-        self.blueSpeedBar = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(6, 106, 166), width=8))
-        self.widgplot.addItem(self.blueSpeedBar)
+        #self.blueSpeedBar = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(6, 106, 166), width=8))
+        #self.widgplot.addItem(self.blueSpeedBar)
 
         self.drawRedCircle(self.widgplot)
         self.redWheelHoriz = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(200, 66, 66), width=8))
@@ -80,8 +80,8 @@ class PlotHandler(object):
         self.widgplot.addItem(self.redSpeedBar)
         self.redSpeedText1 = pg.TextItem(text="-", color = red)
         self.widgplot.addItem(self.redSpeedText1)
-        self.blueSpeedText1 = pg.TextItem(text="-", color = blue)
-        self.widgplot.addItem(self.blueSpeedText1)
+        #self.blueSpeedText1 = pg.TextItem(text="-", color = blue)
+        #self.widgplot.addItem(self.blueSpeedText1)
         self.statusText1 = pg.TextItem(text="-", color = red, anchor=(0.5,0))
         self.widgplot.addItem(self.statusText1)  
         self.statusText1.setPos(0, 180)
@@ -93,7 +93,7 @@ class PlotHandler(object):
 
         #self.widgplot.setAspectLocked(True)
         self.win.show()
-        self.win.move(960,20) # TODO 2
+        self.win.move(1020,20) # TODO 2
         self.widgplot.setXRange(-150, 150, padding=0) # TODO 2
         self.widgplot.setYRange(-120, 180, padding=0) # TODO 2
         self.blinker = True
@@ -131,8 +131,8 @@ class PlotHandler(object):
         posb = (self.vehicle.reference_speed * 10) - 100
         self.redSpeedText1.setText("%.0f" % self.vehicle.actual_speed)
         self.redSpeedText1.setPos(posr + 10, 150)
-        self.blueSpeedText1.setText("%.0f" % self.vehicle.reference_speed)
-        self.blueSpeedText1.setPos(posb + 10, 130)
+        #self.blueSpeedText1.setText("%.0f" % self.vehicle.reference_speed)
+        #self.blueSpeedText1.setPos(posb + 10, 130)
         a1 = np.array([posr, -100.], dtype = np.float)
         a2 = np.array([140.0, 140.], dtype = np.float)
         self.redSpeedBar.setData(a1, a2)
@@ -140,7 +140,7 @@ class PlotHandler(object):
         self.redWheelVertic.setData(r0, r3)
         b1 = np.array([posb, -100.], dtype = np.float)
         b2 = np.array([120.0, 120.], dtype = np.float)
-        self.blueSpeedBar.setData(b1, b2)
+        #self.blueSpeedBar.setData(b1, b2)
 
         b1 = np.array([80 * np.cos(self.vehicle.wheel_reference_rad), -80 * np.cos(self.vehicle.wheel_reference_rad)], dtype = np.float).flatten()
         b2 = np.array([80 * np.sin(self.vehicle.wheel_reference_rad), -80 * np.sin(self.vehicle.wheel_reference_rad)], dtype = np.float).flatten()

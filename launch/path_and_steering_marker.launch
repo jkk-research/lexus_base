@@ -1,6 +1,7 @@
 <launch>
     <node pkg="lexus_base" type="path_and_steering" name="path_and_steering_mark" output="screen">
         <param name="pose_topic" value="/gps/duro/current_pose"/>
+        <param name="path_size" value="200"/>
     </node>
     <!--
     <node pkg="rviz_markers" type="lexus" name="lexus_f" output="screen">
