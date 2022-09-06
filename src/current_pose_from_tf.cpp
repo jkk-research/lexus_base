@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include <tf2_ros/transform_listener.h>>
+#include <tf2_ros/transform_listener.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -25,10 +25,11 @@ int main(int argc, char **argv)
   while (n.ok()){
     geometry_msgs::TransformStamped transform_stamped;
     try{
-      transform_stamped = tfBuffer.lookupTransform("/map", "/base_link", ros::Time(0));
+      transform_stamped = tfBuffer.lookupTransform("map", "base_link", ros::Time(0));
       geometry_msgs::PoseStamped curr_pose;
       curr_pose.header.stamp = transform_stamped.header.stamp;
       curr_pose.header.frame_id = "/map";
+      //ROS_INFO_STREAM(transform_stamped.transform.translation.x);
       curr_pose.pose.position.x = transform_stamped.transform.translation.x;
       curr_pose.pose.position.y = transform_stamped.transform.translation.y;
       curr_pose.pose.position.z = transform_stamped.transform.translation.z;
@@ -40,8 +41,7 @@ int main(int argc, char **argv)
       ros::Duration(0.1).sleep();
       continue;
     }
-
-  ros::spin();
-  return 0;
+    rate.sleep();
   }
+  return 0;
 }

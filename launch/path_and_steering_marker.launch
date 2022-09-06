@@ -1,13 +1,14 @@
 <launch>
-    <node pkg="lexus_base" type="path_and_steering" name="path_and_steering_mark" output="screen">
+    <node pkg="lexus_base" type="path_and_steering" name="path_and_steering_mark_duro" output="screen">
         <param name="pose_topic" value="/gps/duro/current_pose"/>
         <param name="path_size" value="200"/>
         <param name="marker_color" value="b"/>
         <param name="publish_steer_marker" value="true"/>
     </node>
     
-    <node pkg="lexus_base" type="path_and_steering" name="path_and_steering_mark" output="screen">
+    <node pkg="lexus_base" type="path_and_steering" name="path_and_steering_mark_current" output="screen">
         <param name="pose_topic" value="/current_pose"/>
+        <param name="path_topic" value="/marker_path_current"/>
         <param name="path_size" value="200"/>
         <param name="publish_steer_marker" value="false"/>
     </node>

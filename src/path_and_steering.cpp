@@ -107,7 +107,7 @@ void loop(){
     geometry_msgs::PoseStamped pose;
     std::string current_map = "empty";
     pose.header.stamp = ros::Time::now();
-    if (actual_pose.pose.position.x > 0.01 || actual_pose.pose.position.x < -0.01){
+    if ((actual_pose.pose.position.x > 0.001 || actual_pose.pose.position.x < -0.001) && !isnan(actual_pose.pose.position.y) && !isinf(actual_pose.pose.position.y)){
         if (first_run){
             location = getLocation(actual_pose);
             first_run = false;
