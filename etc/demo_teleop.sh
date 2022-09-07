@@ -24,6 +24,8 @@ echo "[INFO] Starting gui_teleop1"
 screen -d -m -S teleop_gui_s bash -c 'rosrun lexus_base gui_teleop1.py'
 echo "[INFO] Starting rviz"
 screen -d -m -S teleopg_rviz bash -c 'roslaunch lexus_base rviz00.launch'
+echo "[INFO] Starting lanelet_marker_zala_uni"
+screen -d -m -S lanelet_marker_zala_uni bash -c 'roslaunch lexus_base lanelet_marker_zala_uni.launch'
 echo "[INFO] OK"
 sleep 4
 #wmctrl -r :ACTIVE: -e 5,0,0,1280,500
