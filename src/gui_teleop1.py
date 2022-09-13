@@ -188,7 +188,7 @@ class VehicleStatusSub(object):
         self.leaf_is_autonomous = "UNDEF"
 
     def wheelDegCallBack(self, msg_deg): 
-        self.wheel_actual_rad = np.deg2rad(np.array([msg_deg.manual_input])) * 19.68 # 19.68 wheel to steering ratio
+        self.wheel_actual_rad = np.deg2rad(np.array([msg_deg.manual_input])) * 80 # wheel to steering ratio TODO
 
     def vehicleAccelCmd(self, msg):
         self.veh_accel_cmd = msg.command

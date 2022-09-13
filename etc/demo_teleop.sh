@@ -17,8 +17,8 @@ echo "[INFO] Starting gps_duro"
 screen -d -m -S driver_duro_gps bash -c 'roslaunch lexus_base gps_duro.launch'
 echo "[INFO] Starting teleop_on_vehicle_CAN_TF"
 screen -d -m -S teleop_on_vehicle_CAN_TF bash -c 'roslaunch lexus_base teleop_on_vehicle.launch'
-echo "[INFO] Starting rqt_image_view"
-screen -d -m -S view_zed_cam bash -c 'rosrun rqt_image_view rqt_image_view /zed_node/left/image_rect_color --on-top '
+#echo "[INFO] Starting rqt_image_view"
+#screen -d -m -S view_zed_cam bash -c 'rosrun rqt_image_view rqt_image_view /zed_node/left/image_rect_color --on-top '
 #screen -d -m -S view_zed_cam bash -c 'rosrun rqt_image_view rqt_image_view /zed_node/left/image_rect_color/compressed --on-top '
 echo "[INFO] Starting gui_teleop1"
 screen -d -m -S teleop_gui_s bash -c 'rosrun lexus_base gui_teleop1.py'

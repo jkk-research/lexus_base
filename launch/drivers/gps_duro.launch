@@ -19,7 +19,7 @@
             zero_based: Z coordinate starts from 0 and relative
             orig: the original Z provided by Duro / Piksi
             -->
-            <param name="z_coord_ref_switch" value="zero_based"/>
+            <param name="z_coord_ref_switch" value="zero"/>
             <!-- euler_based_orientation
             true: euler based, not enabled by default, please enable SPB message SBP_MSG_ORIENT_EULER 0x0221 decimal 545
             false: quaternion based, not enabled by default, please enable SPB message SBP_MSG_ORIENT_QUAT 0x0220 decimal 544

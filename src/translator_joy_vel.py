@@ -29,6 +29,7 @@ class Translator:
         self.joyInit = True
         self.autonomStatusChanged = True
         self.autonomStatus = True
+        self.headlight = False
         self.pacmodst = True
         rospy.loginfo("joy translator")
     
@@ -54,7 +55,7 @@ class Translator:
         brakeCmd.header.stamp = rospy.Time.now()
         steerCmd.header.stamp = rospy.Time.now()
         steerCmd.command = message.axes[0] * 20  # 6 for local 20 for laptop
-        accelCmd.command = (message.axes[1] + 1) 
+        accelCmd.command = (message.axes[1] + 1) / 2
         brakeCmd.command = (message.axes[2] + 1) 
         if(self.autonomStatus == False):
             if(message.buttons[0]): # start A
@@ -78,8 +79,13 @@ class Translator:
         elif(message.axes[5] < 0): # lights 
             TUCmd.command = 3
             rospy.loginfo("Down")
-        elif(message.axes[5] > 0): # lights 
-            TUCmd.command = 1        
+        elif(message.axes[5] > 0): # lights
+            if self.headlight: 
+                self.headlight = False
+                HECmd.command = 2     
+            else:
+                self.headlight = True
+                HECmd.command = 0            
             rospy.loginfo("Up")
         if(self.autonomStatusChanged):
             accelCmd.clear_override = True

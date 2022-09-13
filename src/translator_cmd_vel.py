@@ -34,7 +34,7 @@ class Translator:
         else:
             accelCmd.clear_override = False
         if message.linear.x > 0.2:
-            accelCmd.command = message.linear.x
+            accelCmd.command = message.linear.x / 2
             brakeCmd.command = 0.0
             accelCmd.enable = False
         elif message.linear.x < -0.1:
