@@ -39,7 +39,7 @@ class PlotHandler(object):
              
         self.win.setWindowTitle("Vehicle status plotter")
         self.win.setWindowIcon(qtgqt.QtGui.QIcon(self.rospack.get_path("lexus_base") + "/img/icon02.png"))
-        self.win.resize(300,300)
+        self.win.resize(300,400)
         self.win.setCentralWidget(self.area)
 
         self.dleftbottom = darea.Dock("left bottom", size = (500,400)) # size is only a suggestion
@@ -77,16 +77,37 @@ class PlotHandler(object):
         self.widgplot.addItem(self.redWheelHoriz)
         self.widgplot.addItem(self.redWheelText1)
         self.redSpeedBar = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(200, 66, 66), width=8))
+        self.redAccelBar = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(200, 66, 66), width=8))
+        self.redAccelBarCurrent = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(222, 122, 122), width=8))
+        self.greBrakeBar = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(16, 200, 166), width=8))
+        self.greBrakeBarCurrent = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(130, 200, 200), width=8))
         self.widgplot.addItem(self.redSpeedBar)
-        self.redSpeedText1 = pg.TextItem(text="-", color = red)
+        self.widgplot.addItem(self.redAccelBar)
+        self.widgplot.addItem(self.redAccelBarCurrent)
+        self.widgplot.addItem(self.greBrakeBar)
+        self.redAccelBar = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(200, 66, 66), width=8))
+        self.redAccelBarCurrent = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(222, 122, 122), width=8))
+        self.widgplot.addItem(self.redAccelBar)
+        self.widgplot.addItem(self.redAccelBarCurrent)
+        self.greBrakeBar = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(16, 200, 166), width=8))
+        self.greBrakeBarCurrent = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(130, 200, 200), width=8))
+        self.widgplot.addItem(self.greBrakeBar)
+        self.widgplot.addItem(self.greBrakeBarCurrent)
+        self.redSpeedText1 = pg.TextItem(text="-", color = red) 
+        self.redAccelText1 = pg.TextItem(text="-", color = red)
+        self.greBrakeText1 = pg.TextItem(text="-", color = green)
         self.widgplot.addItem(self.redSpeedText1)
+        self.widgplot.addItem(self.redAccelText1)
+        self.widgplot.addItem(self.greBrakeText1)
         #self.blueSpeedText1 = pg.TextItem(text="-", color = blue)
         #self.widgplot.addItem(self.blueSpeedText1)
         self.statusText1 = pg.TextItem(text="-", color = red, anchor=(0.5,0))
         self.widgplot.addItem(self.statusText1)  
         self.statusText1.setPos(0, 180)
         self.statusText1.setFont(qtgqt.QtGui.QFont('Sans Bold', 18, qtgqt.QtGui.QFont.Bold))
-
+        self.redSpeedText1.setFont(qtgqt.QtGui.QFont('Sans Bold', 16, qtgqt.QtGui.QFont.Bold))
+        self.redAccelText1.setFont(qtgqt.QtGui.QFont('Sans Bold', 16, qtgqt.QtGui.QFont.Bold))
+        self.greBrakeText1.setFont(qtgqt.QtGui.QFont('Sans Bold', 16, qtgqt.QtGui.QFont.Bold))
         self.redWheelVertic = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(200, 66, 66), width=8))
         self.widgplot.addItem(self.redWheelVertic)
 
@@ -95,7 +116,7 @@ class PlotHandler(object):
         self.win.show()
         self.win.move(1020,20) # TODO 2
         self.widgplot.setXRange(-150, 150, padding=0) # TODO 2
-        self.widgplot.setYRange(-120, 180, padding=0) # TODO 2
+        self.widgplot.setYRange(-150, 180, padding=0) # TODO 2
         self.blinker = True
 
     def updateSlow(self):
@@ -127,17 +148,37 @@ class PlotHandler(object):
         r0 = np.array([100 * np.cos(self.vehicle.wheel_actual_rad - np.math.pi / 2), 0.], dtype = np.float)
         r3 = np.array([100 * np.sin(self.vehicle.wheel_actual_rad - np.math.pi / 2), 0.], dtype = np.float)
         xx = 20.0 # TODO  self.vehicle.actual_speed
-        posr = (self.vehicle.actual_speed * 10) - 100
+        posr = (self.vehicle.actual_speed * 2) - 100
+        posx = (self.vehicle.veh_accel_cmd * 100) - 100
+        posy = (self.vehicle.veh_brake_cmd * 100) - 100
         posb = (self.vehicle.reference_speed * 10) - 100
+        posg = (self.vehicle.veh_accel_current * 100) - 100
+        posh = (self.vehicle.veh_brake_current * 100) - 100
         self.redSpeedText1.setText("%.0f" % self.vehicle.actual_speed)
         self.redSpeedText1.setPos(posr + 10, 150)
+        self.redAccelText1.setText("%.2f" % self.vehicle.veh_accel_cmd)
+        self.greBrakeText1.setText("%.2f" % self.vehicle.veh_brake_cmd)
+        self.redAccelText1.setPos(60, -100)
+        self.greBrakeText1.setPos(60, -130)
         #self.blueSpeedText1.setText("%.0f" % self.vehicle.reference_speed)
         #self.blueSpeedText1.setPos(posb + 10, 130)
         a1 = np.array([posr, -100.], dtype = np.float)
         a2 = np.array([140.0, 140.], dtype = np.float)
+        x1 = np.array([posx, -100.], dtype = np.float)
+        x2 = np.array([-120.0, -120.], dtype = np.float)
+        y1 = np.array([posy, -100.], dtype = np.float)
+        y2 = np.array([-140.0, -140.], dtype = np.float)
+        g1 = np.array([posg, -100.], dtype = np.float)
+        g2 = np.array([-128.0, -128.], dtype = np.float)
+        h1 = np.array([posh, -100.], dtype = np.float)
+        h2 = np.array([-148.0, -148.], dtype = np.float)
         self.redSpeedBar.setData(a1, a2)
         self.redWheelHoriz.setData(r1, r2)
         self.redWheelVertic.setData(r0, r3)
+        self.redAccelBar.setData(x1, x2)
+        self.redAccelBarCurrent.setData(g1, g2)
+        self.greBrakeBar.setData(y1, y2)
+        self.greBrakeBarCurrent.setData(h1, h2)
         b1 = np.array([posb, -100.], dtype = np.float)
         b2 = np.array([120.0, 120.], dtype = np.float)
         #self.blueSpeedBar.setData(b1, b2)
@@ -175,6 +216,8 @@ class PlotHandler(object):
 class VehicleStatusSub(object):
     def __init__(self):
         rospy.Subscriber("/pacmod/parsed_tx/steer_rpt", pacmod_m.SystemRptFloat, self.wheelDegCallBack)
+        rospy.Subscriber("/pacmod/parsed_tx/accel_rpt", pacmod_m.SystemRptFloat, self.vehicleAccelCurrent)
+        rospy.Subscriber("/pacmod/parsed_tx/brake_rpt", pacmod_m.SystemRptFloat, self.vehicleBrakeCurrent)
         rospy.Subscriber("/pacmod/as_rx/accel_cmd", pacmod_m.SystemCmdFloat, self.vehicleAccelCmd)
         rospy.Subscriber("/pacmod/as_rx/brake_cmd", pacmod_m.SystemCmdFloat, self.vehicleBrakeCmd)
         rospy.Subscriber("/pacmod/as_tx/vehicle_speed", stdmsg.Float64, self.speedKmpHCallBack)
@@ -186,9 +229,19 @@ class VehicleStatusSub(object):
         self.wheel_actual_rad = -0.01
         self.wheel_reference_rad =  0.01
         self.leaf_is_autonomous = "UNDEF"
+        self.veh_accel_cmd = -0.1
+        self.veh_brake_cmd = -0.1
+        self.veh_accel_current = -0.1
+        self.veh_brake_current = -0.1
 
     def wheelDegCallBack(self, msg_deg): 
-        self.wheel_actual_rad = np.deg2rad(np.array([msg_deg.manual_input])) * 80 # wheel to steering ratio TODO
+        self.wheel_actual_rad = np.deg2rad(np.array([msg_deg.manual_input])) * 5 * 12 # wheel to steering ratio TODO
+
+    def vehicleAccelCurrent(self, msg):
+        self.veh_accel_current = msg.output 
+
+    def vehicleBrakeCurrent(self, msg):
+        self.veh_brake_current = msg.output 
 
     def vehicleAccelCmd(self, msg):
         self.veh_accel_cmd = msg.command
@@ -201,13 +254,13 @@ class VehicleStatusSub(object):
         self.actual_speed = np.array([msg.data]) * 3.6
 
     def steerCmd(self, msg):
-        self.wheel_reference_rad = msg.command * 0.1
+        self.wheel_reference_rad = msg.command * 1 # TODO
 
     def vehicleStatusCallback(self, msg):
         if msg.data == False: 
             self.leaf_is_autonomous = "IN CAR DRIVER"
         elif msg.data == True:
-            self.leaf_is_autonomous = "YOU DRIVE"
+            self.leaf_is_autonomous = "GYOR"
         else:
             self.leaf_is_autonomous = "UNDEF"
 
