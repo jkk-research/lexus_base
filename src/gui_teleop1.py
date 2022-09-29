@@ -95,10 +95,14 @@ class PlotHandler(object):
         self.widgplot.addItem(self.greBrakeBarCurrent)
         self.redSpeedText1 = pg.TextItem(text="-", color = red) 
         self.redAccelText1 = pg.TextItem(text="-", color = red)
+        self.redAccelText2 = pg.TextItem(text="-", color = red)
         self.greBrakeText1 = pg.TextItem(text="-", color = green)
+        self.greBrakeText2 = pg.TextItem(text="-", color = green)
         self.widgplot.addItem(self.redSpeedText1)
         self.widgplot.addItem(self.redAccelText1)
+        self.widgplot.addItem(self.redAccelText2)
         self.widgplot.addItem(self.greBrakeText1)
+        self.widgplot.addItem(self.greBrakeText2)
         #self.blueSpeedText1 = pg.TextItem(text="-", color = blue)
         #self.widgplot.addItem(self.blueSpeedText1)
         self.statusText1 = pg.TextItem(text="-", color = red, anchor=(0.5,0))
@@ -107,7 +111,13 @@ class PlotHandler(object):
         self.statusText1.setFont(qtgqt.QtGui.QFont('Sans Bold', 18, qtgqt.QtGui.QFont.Bold))
         self.redSpeedText1.setFont(qtgqt.QtGui.QFont('Sans Bold', 16, qtgqt.QtGui.QFont.Bold))
         self.redAccelText1.setFont(qtgqt.QtGui.QFont('Sans Bold', 16, qtgqt.QtGui.QFont.Bold))
+        self.redAccelText2.setFont(qtgqt.QtGui.QFont('Sans Bold', 8, qtgqt.QtGui.QFont.Bold))
         self.greBrakeText1.setFont(qtgqt.QtGui.QFont('Sans Bold', 16, qtgqt.QtGui.QFont.Bold))
+        self.greBrakeText2.setFont(qtgqt.QtGui.QFont('Sans Bold', 8, qtgqt.QtGui.QFont.Bold))
+        self.greBrakeText2.setText("Brake")
+        self.greBrakeText2.setPos(-108, -130)
+        self.redAccelText2.setText("Throttle")
+        self.redAccelText2.setPos(-108, -100)
         self.redWheelVertic = pg.PlotCurveItem(pen=pg.mkPen(qtgqt.QtGui.QColor(200, 66, 66), width=8))
         self.widgplot.addItem(self.redWheelVertic)
 
@@ -116,7 +126,7 @@ class PlotHandler(object):
         self.win.show()
         self.win.move(1020,20) # TODO 2
         self.widgplot.setXRange(-150, 150, padding=0) # TODO 2
-        self.widgplot.setYRange(-150, 180, padding=0) # TODO 2
+        self.widgplot.setYRange(-170, 180, padding=0) # TODO 2
         self.blinker = True
 
     def updateSlow(self):
@@ -154,7 +164,7 @@ class PlotHandler(object):
         posb = (self.vehicle.reference_speed * 10) - 100
         posg = (self.vehicle.veh_accel_current * 100) - 100
         posh = (self.vehicle.veh_brake_current * 100) - 100
-        self.redSpeedText1.setText("%.0f" % self.vehicle.actual_speed)
+        self.redSpeedText1.setText("%.0f km/h" % self.vehicle.actual_speed)
         self.redSpeedText1.setPos(posr + 10, 150)
         self.redAccelText1.setText("%.2f" % self.vehicle.veh_accel_cmd)
         self.greBrakeText1.setText("%.2f" % self.vehicle.veh_brake_cmd)
@@ -167,11 +177,11 @@ class PlotHandler(object):
         x1 = np.array([posx, -100.], dtype = np.float)
         x2 = np.array([-120.0, -120.], dtype = np.float)
         y1 = np.array([posy, -100.], dtype = np.float)
-        y2 = np.array([-140.0, -140.], dtype = np.float)
+        y2 = np.array([-150.0, -150.], dtype = np.float)
         g1 = np.array([posg, -100.], dtype = np.float)
         g2 = np.array([-128.0, -128.], dtype = np.float)
         h1 = np.array([posh, -100.], dtype = np.float)
-        h2 = np.array([-148.0, -148.], dtype = np.float)
+        h2 = np.array([-158.0, -158.], dtype = np.float)
         self.redSpeedBar.setData(a1, a2)
         self.redWheelHoriz.setData(r1, r2)
         self.redWheelVertic.setData(r0, r3)
