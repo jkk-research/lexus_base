@@ -22,6 +22,7 @@ screen -d -m -S teleop_on_vehicle_CAN_TF bash -c 'roslaunch lexus_base teleop_on
 #screen -d -m -S view_zed_cam bash -c 'rosrun rqt_image_view rqt_image_view /zed_node/left/image_rect_color/compressed --on-top '
 echo "[INFO] Starting gui_teleop1"
 screen -d -m -S teleop_gui_s bash -c 'rosrun lexus_base gui_teleop1.py'
+screen -d -m -S teleop_kmp_h bash -c 'rosrun lexus_base gui_teleop2kmph.py'
 echo "[INFO] Starting rviz"
 screen -d -m -S teleopg_rviz bash -c 'roslaunch lexus_base rviz00.launch'
 echo "[INFO] Starting lanelet_marker_zala_uni"
