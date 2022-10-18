@@ -62,7 +62,7 @@
         "name:Topics"
       ],
       "followMode": "follow",
-      "followTf": "/base_link",
+      "followTf": "base_link",
       "modifiedNamespaceTopics": [],
       "pinTopics": false,
       "settingsByKey": {},

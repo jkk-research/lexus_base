@@ -14,7 +14,7 @@
     </node>
     <!--
     <node pkg="rviz_markers" type="lexus" name="lexus_f" output="screen">
-            <param name="frame_id" value="/base_link"/>
+            <param name="frame_id" value="base_link"/>
     </node>
     -->
 </launch>

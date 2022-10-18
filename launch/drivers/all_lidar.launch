@@ -1,0 +1,7 @@
+<launch>
+  <include file="$(find lexus_base)/launch/drivers/os_32_right_a.launch" />
+  <include file="$(find lexus_base)/launch/drivers/os_64_center_a.launch" />
+  <!--
+  <include file="$(find lexus_base)/launch/drivers/os_64_left_a.launch" />
+  -->
+</launch>

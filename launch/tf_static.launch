@@ -1,11 +1,16 @@
 <launch>
-  <node args="697237.0 5285644.0 0.0 0.0 0.0 0.0 /map /map_gyor_0 50" name="gyor0_tf_publisher" pkg="tf" type="static_transform_publisher"/>
-  <node args="639770.0 5195040.0 0.0 0.0 0.0 0.0 /map /map_zala_0 50" name="zala0_tf_publisher" pkg="tf" type="static_transform_publisher"/>
-  <!-- /map_gyor_0 and map_zala_0 fixes, the RVIZ issue: https://github.com/ros-visualization/rviz/issues/502 -->
-  <node args="0.0 0.0 0.2 0.0 0.0 0.0 /base_link /duro_gps 50" name="duro_gps_tf_publisher" pkg="tf" type="static_transform_publisher"/>
-  <node args="1.6 0.0 1.286 0.0 0.0 0.0 /base_link /zed_camera_front 50" name="zed_camera_front_tf_publisher" pkg="tf" type="static_transform_publisher"/>
-  <node args="0.0 0.0 0.2 0.0 0.0 0.0 /base_link /duro_gps_imu 50" name="duro_gps_imu_tf_publisher" pkg="tf" type="static_transform_publisher"/>
-  <node args="0.0 0.0 -0.316 0.0 0.0 0.0 /base_link /ground_link 50" name="base_link_ground_link_publisher" pkg="tf" type="static_transform_publisher"/>
+  <node args="697237.0 5285644.0 0.0 0.0 0.0 0.0 map map_gyor_0 50" name="gyor0_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+  <node args="639770.0 5195040.0 0.0 0.0 0.0 0.0 map map_zala_0 50" name="zala0_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+  <!-- map_gyor_0 and map_zala_0 fixes, the RVIZ issue: https://github.com/ros-visualization/rviz/issues/502 -->
+  <node args="0.0 0.0 0.2 0.0 0.0 0.0 base_link duro_gps 50" name="duro_gps_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+  <node args="1.6 0.0 1.286 0.0 0.0 0.0 base_link zed_camera_front 50" name="zed_camera_front_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+  <node args="0.0 0.0 0.2 0.0 0.0 0.0 base_link duro_gps_imu 50" name="duro_gps_imu_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+  <node args="0.0 0.0 -0.316 0.0 0.0 0.0 base_link ground_link 50" name="base_link_ground_link_publisher" pkg="tf" type="static_transform_publisher"/>
+  <node args="1.6 0.5 1.3 0.0 0.0 0.0 base_link os_left/os_sensor 50" name="left1_os_front_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+  <node args="1.6 -0.5 1.3 0.0 0.0 0.0 base_link os_right/os_sensor 50" name="right1_os_front_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+  <node args="0.8 0.0 1.8 0.0 0.0 0.0 base_link os_center/os_sensor 50" name="center1_os_front_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+  
+  
   <!-- Note the order ypr instead of the often used rpy -->
   <!--
   TODO accurate pose

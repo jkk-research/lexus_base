@@ -1,7 +1,7 @@
 <launch>
     <node type="play" pkg="rosbag" args="--keep-alive --rate=0.05 $(find lexus_base)/etc/zalazone_uni_track_marker.bag" name="zala_uni_lanelet_marker" output="screen" />
-    <node args="429.0 -1455.0 0.0 0.0 0.0 0.0 /map_zala_0 /map_zala_1 50" name="zala1_tf_publisher" pkg="tf" type="static_transform_publisher"/>
-    <node args="200.0    68.0 0.0 0.0 0.0 0.0 /map_zala_0 /map_zala_2 50" name="zala2_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="429.0 -1455.0 0.0 0.0 0.0 0.0 map_zala_0 map_zala_1 50" name="zala1_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="200.0    68.0 0.0 0.0 0.0 0.0 map_zala_0 map_zala_2 50" name="zala2_tf_publisher" pkg="tf" type="static_transform_publisher"/>
     <!--
     rosrun tf static_transform_publisher 429.0 -1455.0 0.0 0.0 0.0 0.0 map_zala_0 map_zala_1 50 
     rosrun tf static_transform_publisher 200.0 68.0 0.0 0.0 0.0 0.0 map_zala_0 map_zala_2 50  

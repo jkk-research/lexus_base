@@ -28,7 +28,7 @@ int main(int argc, char **argv)
       transform_stamped = tfBuffer.lookupTransform("map", "base_link", ros::Time(0));
       geometry_msgs::PoseStamped curr_pose;
       curr_pose.header.stamp = transform_stamped.header.stamp;
-      curr_pose.header.frame_id = "/map";
+      curr_pose.header.frame_id = "map";
       //ROS_INFO_STREAM(transform_stamped.transform.translation.x);
       curr_pose.pose.position.x = transform_stamped.transform.translation.x;
       curr_pose.pose.position.y = transform_stamped.transform.translation.y;
