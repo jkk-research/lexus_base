@@ -15,7 +15,7 @@ roslaunch ouster_ros sensor.launch  sensor_hostname:=os-122231000907.local
     RNG19_RFL8_SIG16_NIR16,
     RNG15_RFL8_NIR8
     }"/>
-  <arg name="lidar_mode" default=" " doc="resolution and rate; possible vaules: {
+  <arg name="lidar_mode" default="1024x20" doc="resolution and rate; possible vaules: {
     512x10,
     512x20,
     1024x10,

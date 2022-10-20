@@ -6,9 +6,11 @@ Panels:
       Expanded:
         - /Global Options1
         - /TF1/Frames1
+        - /os_center1
+        - /os_right1
         - /TF2
         - /TF2/Frames1
-      Splitter Ratio: 0.3709401786327362
+      Splitter Ratio: 0.6095505356788635
     Tree Height: 229
   - Class: rviz/Selection
     Name: Selection
@@ -28,7 +30,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: os_center
+    SyncSource: Image
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -51,7 +53,7 @@ Visualization Manager:
         Y: 0
         Z: 0
       Plane: XY
-      Plane Cell Count: 10
+      Plane Cell Count: 120
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/Marker
@@ -173,7 +175,7 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.05999999865889549
+      Size (m): 0.20000000298023224
       Style: Flat Squares
       Topic: /os_center/points
       Unreliable: false
@@ -203,7 +205,7 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.05999999865889549
+      Size (m): 0.10000000149011612
       Style: Flat Squares
       Topic: /os_right/points
       Unreliable: false
@@ -235,7 +237,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.05999999865889549
       Style: Flat Squares
-      Topic: /os_center/points
+      Topic: /os_left/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -262,19 +264,19 @@ Visualization Manager:
         os_center/os_imu:
           Value: false
         os_center/os_lidar:
-          Value: true
-        os_center/os_sensor:
           Value: false
+        os_center/os_sensor:
+          Value: true
         os_left/os_sensor:
           Value: false
         os_right/os_imu:
           Value: false
         os_right/os_lidar:
-          Value: true
-        os_right/os_sensor:
           Value: false
-        zed_camera_front:
+        os_right/os_sensor:
           Value: true
+        zed_camera_front:
+          Value: false
       Marker Scale: 3
       Name: TF
       Show Arrows: true
@@ -332,25 +334,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 7.778408050537109
+      Distance: 7.649831771850586
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.1158632040023804
-        Y: -0.6758654117584229
-        Z: -4.76837158203125e-7
-      Focal Shape Fixed Size: true
+        X: 0.6135931015014648
+        Y: -0.17398381233215332
+        Z: -7.65851200412726e-6
+      Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5047959089279175
+      Pitch: 0.6303980350494385
       Target Frame: base_link
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.9226999282836914
+      Yaw: 3.550398588180542
     Saved: ~
 Window Geometry:
   Displays:
@@ -370,5 +372,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1280
-  X: 0
-  Y: 27
+  X: 3
+  Y: 71

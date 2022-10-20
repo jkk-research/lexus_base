@@ -1,11 +1,11 @@
 <!--
-roslaunch ouster_ros sensor.launch  sensor_hostname:=os-992232000252.local
+roslaunch ouster_ros sensor.launch  sensor_hostname:=os-122227001628.local
 -->
 
 <launch>
 
-  <arg name="ouster_ns" default="os_center" doc="Override the default namespace of all ouster nodes"/>
-  <arg name="sensor_hostname" default="os-992232000252.local" doc="hostname or IP in dotted decimal form of the sensor"/>
+  <arg name="ouster_ns" default="os_left" doc="Override the default namespace of all ouster nodes"/>
+  <arg name="sensor_hostname" default="os-122227001628.local" doc="hostname or IP in dotted decimal form of the sensor"/>
   <arg name="udp_dest" default=" " doc="hostname or IP where the sensor will send data packets"/>
   <arg name="lidar_port" default="0" doc="port to which the sensor should send lidar data"/>
   <arg name="imu_port" default="0" doc="port to which the sensor should send imu data"/>
@@ -73,5 +73,6 @@ roslaunch ouster_ros sensor.launch  sensor_hostname:=os-992232000252.local
       args="load nodelets_os/OusterImage os_nodelet_mgr">
     </node>
   </group>
+
 
 </launch>
