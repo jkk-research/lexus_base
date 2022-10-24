@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find lexus_base)/launch/tf_duro_front.launch" />
+  <include file="$(find lexus_base)/launch/current_pose_from_tf.launch" />
+  <node pkg="rviz_markers" type="lexus" name="lexus_f" output="screen">
+          <param name="frame_id" value="base_link"/>
+  </node>
+</launch>
