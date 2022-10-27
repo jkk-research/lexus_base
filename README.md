@@ -1,6 +1,8 @@
 # lexus_base
 ROS package for basic functions on Lexus rx450h.
 
+![](img/lexus3d01.gif)
+
 - https://github.com/astuff/kvaser_interface
 - https://github.com/astuff/pacmod3
 
@@ -100,3 +102,7 @@ code pacmod_game_control.launch
 # Rosgraph
 
 ![](img/rosgraph_before01.svg)
+
+
+# Sensor data
+![](img/sensordata01.gif)
