@@ -14,7 +14,7 @@ sleep 4
 echo "[INFO] Starting zed_default"
 screen -d -m -S driver_zed2_def bash -c 'roslaunch lexus_base zed_default.launch'
 echo "[INFO] Starting gps_duro"
-screen -d -m -S driver_duro_gps bash -c 'roslaunch lexus_base gps_duro.launch'
+screen -d -m -S driver_duro_gps bash -c 'roslaunch lexus_base gps_duro_reference.launch'
 echo "[INFO] Starting teleop_on_vehicle_CAN_TF"
 screen -d -m -S teleop_on_vehicle_CAN_TF bash -c 'roslaunch lexus_base teleop_on_vehicle.launch'
 #echo "[INFO] Starting rqt_image_view"

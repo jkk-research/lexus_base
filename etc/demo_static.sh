@@ -13,7 +13,7 @@ sleep 4
 echo "[INFO] Starting zed_default"
 screen -d -m -S driver_zed2_def bash -c 'roslaunch lexus_base zed_default.launch'
 echo "[INFO] Starting gps_duro"
-screen -d -m -S driver_duro_gps bash -c 'roslaunch lexus_base gps_duro.launch'
+screen -d -m -S driver_duro_gps bash -c 'roslaunch lexus_base gps_duro_reference.launch'
 screen -d -m -S driver_os64cent bash -c 'roslaunch lexus_base os_64_center_a.launch'
 screen -d -m -S driver_os32righ bash -c 'roslaunch lexus_base os_32_right_a.launch'
 echo "[INFO] Starting tf"
