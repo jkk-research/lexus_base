@@ -1,0 +1,46 @@
+<!--
+ Starts all sesnor but with a lexus1 namespace (also tf with namespace)    
+-->
+
+
+<launch>
+  <arg name="ns_prefix" default="lexus1"/>
+  <group ns="$(arg ns_prefix)">
+    <param name="ns_prefix" value="$(arg ns_prefix)" />
+
+    <node args="697237.0 5285644.0 0.0 0.0 0.0 0.0 map map_gyor_0 50" name="gyor0_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="639770.0 5195040.0 0.0 0.0 0.0 0.0 map map_zala_0 50" name="zala0_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <!-- map_gyor_0 and map_zala_0 fixes, the RVIZ issue: https://github.com/ros-visualization/rviz/issues/502 -->
+    <node args="0.0 0.0 0.2 0.0 0.0 0.0      $(arg ns_prefix)/base_link $(arg ns_prefix)/duro_gps 50" name="duro_gps_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="1.6 0.0 1.286 0.0 0.0 0.0    $(arg ns_prefix)/base_link $(arg ns_prefix)/zed_camera_front 50" name="zed_camera_front_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="0.0 0.0 0.2 0.0 0.0 0.0      $(arg ns_prefix)/base_link $(arg ns_prefix)/duro_gps_imu 50" name="duro_gps_imu_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="0.0 0.0 -0.37 0.0 0.0 0.0    $(arg ns_prefix)/base_link $(arg ns_prefix)/ground_link 50" name="base_link_ground_link_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="1.6 0.5 1.3 0.0 0.0 0.0      $(arg ns_prefix)/base_link $(arg ns_prefix)/os_left/os_sensor 50" name="left1_os_front_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="1.53 -0.5 1.41 0.0 0.0 0.0   $(arg ns_prefix)/base_link $(arg ns_prefix)/os_right/os_sensor 50" name="right1_os_front_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="0.75 0.0 1.91 0.0 0.0 0.0    $(arg ns_prefix)/base_link $(arg ns_prefix)/os_center/os_sensor 50" name="center1_os_front_tf_publisher" pkg="tf" type="static_transform_publisher"/>
+    <node args="-1.56 -0.43 -1.1 0.0 0.0 0.0 $(arg ns_prefix)/gps $(arg ns_prefix)/base_link 10"  name="duro_static_tf_publisher" pkg="tf" type="static_transform_publisher" output="screen" />
+
+    <node pkg="rviz_markers" type="lexus" name="lexus_f" output="screen">
+            <param name="frame_id" value="$(arg ns_prefix)/base_link"/>
+    </node>
+    
+    <include file="$(find lexus_base)/launch/drivers/zed_default.launch" />
+    <include file="$(find lexus_base)/launch/drivers/gps_duro_reference.launch" />
+
+    <node pkg="lexus_base" type="gps_tf_publisher" name="duro_lexus_tf_publisher" output="screen">
+      <param name="pose_topic" value="/$(arg ns_prefix)/gps/duro/current_pose"/>
+    </node>
+
+  </group>
+
+  
+<include file="$(find lexus_base)/launch/drivers/os_32_right_a.launch" >
+        <arg name="ouster_ns" default="$(arg ns_prefix)/os_right"/>
+</include>
+<!--
+<include file="$(find lexus_base)/launch/drivers/os_64_center_a.launch" >
+            <arg name="ouster_ns" default="$(arg ns_prefix)/os_center"/>
+</include>
+-->
+
+</launch>
