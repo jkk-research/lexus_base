@@ -16,10 +16,12 @@
 
             <!-- z_coord_ref_switch can be zero / zero_based / orig 
             zero: the Z coordinate is always 0
+            exact: constant Z z_coord_exact_height
             zero_based: Z coordinate starts from 0 and relative
             orig: the original Z provided by Duro / Piksi
             -->
-            <param name="z_coord_ref_switch" value="zero"/>
+            <param name="z_coord_ref_switch" value="exact"/>
+            <param name="z_coord_exact_height" value="1.8"/>
             <!-- euler_based_orientation
             true: euler based, not enabled by default, please enable SPB message SBP_MSG_ORIENT_EULER 0x0221 decimal 545
             false: quaternion based, not enabled by default, please enable SPB message SBP_MSG_ORIENT_QUAT 0x0220 decimal 544
