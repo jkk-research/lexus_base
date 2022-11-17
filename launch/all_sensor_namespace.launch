@@ -31,16 +31,22 @@
       <param name="pose_topic" value="/$(arg ns_prefix)/gps/duro/current_pose"/>
     </node>
 
+  <!-- PacMod Driver -->
+  <include file="$(find vehicle_platform)/launch/platform.launch">
+    <arg name="use_dbw" value="true" />
+  </include>
+
+
   </group>
 
   
 <include file="$(find lexus_base)/launch/drivers/os_32_right_a.launch" >
         <arg name="ouster_ns" default="$(arg ns_prefix)/os_right"/>
 </include>
-<!--
 <include file="$(find lexus_base)/launch/drivers/os_64_center_a.launch" >
             <arg name="ouster_ns" default="$(arg ns_prefix)/os_center"/>
 </include>
+<!--
 -->
 
 </launch>
