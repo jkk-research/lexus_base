@@ -1,6 +1,7 @@
 <launch>
   <node pkg="lexus_base" type="gps_tf_publisher" name="duro_lexus_tf_publisher" output="screen">
     <param name="pose_topic" value="/gps/duro/current_pose"/>
+    <param name="child_frame_id" value="XXXgps"/>
   </node>
 
   <node pkg="tf" type="static_transform_publisher" name="duro_static_tf_publisher" args="-1.56 -0.43 -1.1 0.0 0.0 0.0 gps base_link 10" output="screen" />

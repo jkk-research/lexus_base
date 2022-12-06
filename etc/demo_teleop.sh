@@ -9,7 +9,7 @@ export ROS_MASTER_URI=http://192.168.1.5:11311
 export DISPLAY=:0
 echo "[INFO] Starting roscore"
 screen -d -m -S roscore bash -c 'roscore'
-xrandr --output HDMI-0 --mode 1280x720
+#xrandr --output HDMI-0 --mode 1280x720
 sleep 4
 echo "[INFO] Starting zed_default"
 screen -d -m -S driver_zed2_def bash -c 'roslaunch lexus_base zed_default.launch'
