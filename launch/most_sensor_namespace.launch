@@ -1,10 +1,10 @@
 <!--
- Starts most sesnor but with a lexus1 namespace (also tf with namespace)    
+ Starts most sesnor but with a lexus3 namespace (also tf with namespace)    
 -->
 
 
 <launch>
-  <arg name="ns_prefix" default="lexus1"/>
+  <arg name="ns_prefix" default="lexus3"/>
   <group ns="$(arg ns_prefix)">
     <param name="ns_prefix" value="$(arg ns_prefix)" />
 
@@ -30,7 +30,7 @@
 
     <node pkg="lexus_base" type="gps_tf_publisher" name="duro_lexus_tf_publisher" output="screen">
       <param name="pose_topic" value="/$(arg ns_prefix)/gps/duro/current_pose"/>
-      <param name="child_frame_id" value="lexus1/gps"/>
+      <param name="child_frame_id" value="lexus3/gps"/>
     </node>
 
   <!-- PacMod Driver -->

@@ -1,8 +1,14 @@
 <launch>
     <!-- rosrun lexus_base speed_control-->
     <node pkg="lexus_base" type="speed_control" name="speed_control_pid" output="screen">
-        <param name="p_gain_accel" value="1.2"/>
-        <param name="i_gain_accel" value="0.01"/>
+    <!--
+        <param name="p_gain_accel" value="0.5"/>
+        <param name="i_gain_accel" value="1.0"/>
+        <param name="d_gain_accel" value="0.0"/>
+        <param name="p_gain_brake" value="0.3"/>
+        <param name="i_gain_brake" value="1.0"/>
+        <param name="d_gain_brake" value="0.0"/>
+    -->
     </node>
     <!-- rosrun rqt_reconfigure rqt_reconfigure -->
     <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconf" output="screen" />
