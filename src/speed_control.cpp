@@ -26,8 +26,10 @@ double p_out_brake, i_out_brake, d_out_brake = 0.0;
 double const _max_i_accel = 1.0, _max_i_brake = 1.0; // anti windup constants TODO: check valid params 
 double t_integ_accel, t_integ_brake; // anti windup
 double t_derivative_accel, t_derivative_brake;
+double accel_command_prev = 0.0, brake_command_prev = 0.0;
 bool autonom_status_changed = true;
-bool first_run = true, standstill = false;
+bool first_run = true;
+bool control_state = true;
 std_msgs::String status_string_msg;
 pacmod_msgs::SystemCmdFloat accel_command;
 pacmod_msgs::SystemCmdFloat brake_command;
@@ -71,23 +73,38 @@ void speedCurrentCallback(const pacmod_msgs::VehicleSpeedRpt &speed_msg)
     speed_diff = vehicle_speed_reference - vehicle_speed_actual;
     speed_diff_kmh = speed_diff * 3.6;
     //ROS_INFO_STREAM(" diff km/h: " << speed_diff_kmh);
-    if(speed_diff > 0){
+    if( (speed_diff > -0.15 && control_state) || (speed_diff > 0.15) ){
+        control_state = true;
         //ROS_INFO_STREAM("accelerate");
-        p_out_accel = speed_diff * pid.p_gain_accel * dt;
-        t_integ_accel += p_out_accel * dt;
+        p_out_accel = speed_diff * pid.p_gain_accel;
+        t_integ_accel += speed_diff * dt;
         // Restrict to max Anti-Windup
-        if( t_integ_accel > _max_i_accel)
-            t_integ_accel = _max_i_accel;
+        //if( t_integ_accel > _max_i_accel)
+        //    t_integ_accel = _max_i_accel;
         i_out_accel = t_integ_accel * pid.i_gain_accel;
         t_derivative_accel = (speed_diff - speed_diff_prev) / dt;
         d_out_accel = pid.d_gain_accel * t_derivative_accel;
-        accel_command.command = p_out_accel + i_out_accel + d_out_accel;
+        double acclel_command_raw = p_out_accel + i_out_accel + d_out_accel;
+        if (acclel_command_raw > 1.0)
+        {
+            t_integ_accel = acclel_command_raw - p_out_accel - d_out_accel;
+            acclel_command_raw = 1.0;
+        }
+        accel_command.command = acclel_command_raw;
         brake_command.command = 0.0;
+        // gradient limit
+        if((accel_command.command - accel_command_prev) / dt > 0.4 && dt > 0.0){
+            accel_command.command = accel_command_prev + 0.4 * dt;
+        }
+        else if((accel_command.command - accel_command_prev) / dt < -1.6 && dt > 0.0){
+            accel_command.command = accel_command_prev - 1.6 * dt;
+        } 
     }
-    else if(speed_diff < 0){
+    else if( (speed_diff < 0.15 && !control_state) || (speed_diff < -0.15) ){
+        control_state = false;
         //ROS_INFO_STREAM("brake");
-        p_out_brake = speed_diff * pid.p_gain_brake * dt;
-        t_integ_brake += p_out_brake * dt;
+        p_out_brake = speed_diff * pid.p_gain_brake ;
+        t_integ_brake += speed_diff * dt;
         // Restrict to max Anti-Windup
         if( t_integ_brake > _max_i_brake)
             t_integ_brake = _max_i_brake;
@@ -96,12 +113,10 @@ void speedCurrentCallback(const pacmod_msgs::VehicleSpeedRpt &speed_msg)
         d_out_brake = pid.d_gain_brake * t_derivative_brake;
         brake_command.command = -1.0 * (p_out_brake + i_out_brake + d_out_brake);
         accel_command.command = 0.0;
-    }
-    // TODO: add standstill ?
-    if (standstill){
-        brake_command.command = 0.2;
-        accel_command.command = 0.0;
-        status_string_msg.data = "standstill";
+        // gradient limit
+        if((brake_command.command - brake_command_prev) / dt > 0.8 && dt > 0.0){
+            brake_command.command = brake_command_prev + 0.8 * dt;
+        }
     }
     if(autonom_status_changed){ 
         accel_command.clear_override = true;
@@ -123,10 +138,6 @@ void speedCurrentCallback(const pacmod_msgs::VehicleSpeedRpt &speed_msg)
         // /lexus3/pacmod/parsed_tx/vehicle_speed_rpt is assumed 30 Hz
         dt = 0.033333;
     }
-    if(first_run){
-        first_run = false;
-        status_string_msg.data = "longitudinal_control_started";
-    }
 
 
     steer_command.rotation_rate = 3.3;
@@ -139,10 +150,13 @@ void speedCurrentCallback(const pacmod_msgs::VehicleSpeedRpt &speed_msg)
     accel_pub.publish(accel_command);
     brake_pub.publish(brake_command);
     steer_pub.publish(steer_command);
+    status_string_msg.data = control_state ? "accel" : "brake";
     if(status_string_msg.data.compare(""))
         status_string_pub.publish(status_string_msg);
     status_string_msg.data = "";
     prev_time = current_time; 
+    accel_command_prev = accel_command.command;
+    brake_command_prev = brake_command.command;
     speed_diff_prev = speed_diff;
     
 }

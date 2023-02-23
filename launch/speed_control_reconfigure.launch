@@ -3,11 +3,11 @@
     <node pkg="lexus_base" type="speed_control" name="speed_control_pid" output="screen">
     <!--
     -->
-        <param name="p_gain_accel" value="15.0"/>
-        <param name="i_gain_accel" value="0.0"/>
+        <param name="p_gain_accel" value="0.29"/>
+        <param name="i_gain_accel" value="0.035"/>
         <param name="d_gain_accel" value="0.0"/>
-        <param name="p_gain_brake" value="9.0"/>
-        <param name="i_gain_brake" value="0.0"/>
+        <param name="p_gain_brake" value="0.15"/>
+        <param name="i_gain_brake" value="0.038"/>
         <param name="d_gain_brake" value="0.0"/>
     </node>
     <!-- rosrun rqt_reconfigure rqt_reconfigure -->

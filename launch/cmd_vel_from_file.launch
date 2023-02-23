@@ -1,0 +1,8 @@
+<launch>
+    <node name = "cmd_csv_node" pkg = "lexus_base" type = "cmd_vel_from_file.py" output = "screen" >
+        <param name="csv" value="01.csv" />
+        <!--
+        <param name="csv" value="02.csv" />
+        -->
+    </node>
+</launch>
